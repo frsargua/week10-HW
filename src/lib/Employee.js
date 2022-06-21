@@ -19,6 +19,10 @@ class Employee {
   idGenerator() {
     return Math.floor((1 + Math.random()) * 0x10000);
   }
+
+  getRole() {
+    return "Employee";
+  }
 }
 
 module.exports = Employee;
