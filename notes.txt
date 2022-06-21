@@ -1,0 +1,20 @@
+Questions:
+
+1st
+- What is your team's name?
+- Please enter manager's name
+- Please enter manager's ID
+- Please enter manager's emailAddress
+- Please enter manager's office number
+- Options?
+    - Engineer
+        - Name
+        - ID
+        - emailAddress
+        - GitHub
+    - Intern
+        - Name
+        - ID
+        - emailAddress
+        - School
+    - Finish
