@@ -1,0 +1,24 @@
+{
+  "name": "week10-hw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frsargua/week10-HW.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frsargua/week10-HW/issues"
+  },
+  "homepage": "https://github.com/frsargua/week10-HW#readme",
+  "dependencies": {
+    "inquirer": "^9.0.0",
+    "jest": "^28.1.1",
+    "nodemon": "^2.0.16"
+  }
+}
