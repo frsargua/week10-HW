@@ -6,7 +6,7 @@ class Engineer extends Employee {
     this.gitHubUserName = gitHubUserName;
   }
 
-  getGitHubUserName() {
+  getGitHub() {
     return this.getGitHubUserName;
   }
 
