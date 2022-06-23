@@ -1,17 +1,15 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const emailValidator = require("email-validator");
-const { verify } = require("crypto");
+const Joi = require("joi");
 
-// Question array of objects for each role
 let arrayStaffGlobal = [];
 
 const questionManager = [
   {
     name: "team",
     message: "Please enter the name of your Team:",
-    type: "input",
-    default: "Mandingo",
+    type: "text",
   },
   {
     name: "name",
