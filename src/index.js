@@ -4,35 +4,39 @@ const emailValidator = require("email-validator");
 const { verify } = require("crypto");
 
 // Question array of objects for each role
-
 let arrayStaffGlobal = [];
 
-console.log(arrayStaffGlobal);
-
 const questionManager = [
+  {
+    name: "team",
+    message: "Please enter the name of your Team:",
+    type: "input",
+    default: "Mandingo",
+  },
   {
     name: "name",
     message: "Please enter manager's name:",
     type: "input",
-    default: "1",
+    default: "Rachel",
   },
   {
     name: "ID",
     message: "Please enter manager's ID:",
     type: "input",
-    default: "2",
+    default: "1",
   },
   {
     name: "email",
     message: "Please enter manager's email:",
     type: "input",
-    default: "3",
+    validate: emailValidator.validate,
+    default: "dummyEmail@gmail.com",
   },
   {
     name: "officeNumber",
     message: "Please enter manager's office number:",
     type: "input",
-    default: "4",
+    default: "1",
   },
 ];
 const questionsEngineer = createQuestions("Engineer", "github");
@@ -57,7 +61,8 @@ function createQuestions(role, extraVariable) {
       name: "email",
       message: `Please enter ${role}'s email:`,
       type: "input",
-      default: "3",
+      validate: emailValidator.validate,
+      default: "dummyEmail@gmail.com",
     },
     {
       name: `${extraVariable}`,
@@ -197,7 +202,7 @@ const renderIntern = (arrayStaff) => {
       stringer += `
       <div class="card" style="width: 18rem">
       <div class="bg-success">
-        <h4 class="card-title text-center p-1 text-white">${arrayStaff.name}</h4>
+        <h4 class="card-title text-center p-1 text-white">${arrayStaff[0][i].name}</h4>
         <h5 class="card-title text-center text-white">
           <i class="fa-solid fa-seedling"></i> Intern
         </h5>
@@ -250,7 +255,9 @@ const renderHTMLTemplate = (arrayObjects) => {
       </head>
       <body>
         <!-- Header -->
-        <div class="card-header text-center fs-1">Title</div>
+        <div class="card-header text-center fs-1">${
+          arrayObjects[0][1].team
+        }</div>
         <!------------ Cards ------------>
         <!-- Managers -->
         <p>
@@ -327,6 +334,7 @@ const renderPage = async () => {
     renderHTMLTemplate(arrayStaffGlobal),
     (err) => (err ? console.error(err) : console.log("Success!"))
   );
+  console.log(arrayStaffGlobal);
 };
 
 renderPage();
