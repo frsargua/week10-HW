@@ -1,7 +1,7 @@
 class Employee {
-  constructor(name, email) {
+  constructor(name, email, id) {
     this.name = name;
-    this.id = this.idGenerator;
+    this.id = id;
     this.email = email;
   }
   getName() {
@@ -14,10 +14,6 @@ class Employee {
 
   getEmail() {
     return this.email;
-  }
-
-  idGenerator() {
-    return Math.floor((1 + Math.random()) * 0x10000);
   }
 
   getRole() {
