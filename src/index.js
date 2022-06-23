@@ -3,6 +3,12 @@ const fs = require("fs");
 const emailValidator = require("email-validator");
 const Joi = require("joi");
 
+//Importing classes
+const Employee = require("./lib/Employee");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
+
 let arrayStaffGlobal = [];
 
 const questionManager = [
@@ -78,8 +84,14 @@ const enquirerFunction = async () => {
     console.log("First path");
     let isTrue = true;
     let arrayStaff = [];
-    arrayStaff.push(answerOne);
-
+    arrayStaff.push(
+      new Manager(
+        answerOne.name,
+        answerOne.email,
+        answerOne.ID,
+        answerOne.officeNumber
+      )
+    );
     while (isTrue) {
       await inquirer
         .prompt({
@@ -95,12 +107,27 @@ const enquirerFunction = async () => {
             isTrue = false;
             return;
           } else if (answerTwo.staff == "Engineer") {
-            await inquirer.prompt(questionsEngineer).then((answers2) => {
-              arrayStaff.push(answers2);
+            await inquirer.prompt(questionsEngineer).then((answersTwo) => {
+              arrayStaff.push(
+                new Engineer(
+                  answersTwo.name,
+                  answersTwo.email,
+                  answersTwo.ID,
+                  answersTwo.github
+                )
+              );
+              console.log(arrayStaff);
             });
           } else if (answerTwo.staff == "Intern") {
-            await inquirer.prompt(questionIntern).then((answers2) => {
-              arrayStaff.push(answers2);
+            await inquirer.prompt(questionIntern).then((answersThree) => {
+              arrayStaff.push(
+                new Intern(
+                  answersThree.name,
+                  answersThree.email,
+                  answersThree.ID,
+                  answersThree.school
+                )
+              );
             });
           }
         });
