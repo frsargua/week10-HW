@@ -5,15 +5,9 @@ const { verify } = require("crypto");
 
 // Question array of objects for each role
 
-let arrayStaffGlobal = [
-  [
-    { name: "1", ID: "2", email: "3", officeNumber: "4" },
-    { name: "1", ID: "2", email: "3", github: "4" },
-    { name: "1", ID: "2", email: "3", school: "4" },
-    { name: "1", ID: "2", email: "3", school: "4" },
-    { name: "1", ID: "2", email: "3", github: "4" },
-  ],
-];
+let arrayStaffGlobal = [];
+
+console.log(arrayStaffGlobal);
 
 const questionManager = [
   {
@@ -41,7 +35,6 @@ const questionManager = [
     default: "4",
   },
 ];
-
 const questionsEngineer = createQuestions("Engineer", "github");
 const questionIntern = createQuestions("intern", "school");
 
@@ -77,8 +70,8 @@ function createQuestions(role, extraVariable) {
 }
 
 // Tool functions
-const enquirerFunction = () => {
-  inquirer.prompt(questionManager).then(async (answerOne) => {
+const enquirerFunction = async () => {
+  await inquirer.prompt(questionManager).then(async (answerOne) => {
     console.log("First path");
     let isTrue = true;
     let arrayStaff = [];
@@ -326,6 +319,14 @@ const renderHTMLTemplate = (arrayObjects) => {
     `;
 };
 //Functions to run to create page
-// enquirerFunction();
+const renderPage = async () => {
+  await enquirerFunction();
+  //   console.log(renderHTMLTemplate(arrayStaffGlobal));
+  fs.writeFile(
+    "../dist/Team.html",
+    renderHTMLTemplate(arrayStaffGlobal),
+    (err) => (err ? console.error(err) : console.log("Success!"))
+  );
+};
 
-console.log(renderHTMLTemplate(arrayStaffGlobal));
+renderPage();
