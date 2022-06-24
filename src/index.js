@@ -1,106 +1,20 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
-const emailValidator = require("email-validator");
-const Joi = require("joi");
 
 //Importing classes
-const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
+// importing questions
+const {
+  questionManager,
+  questionsEngineer,
+  questionIntern,
+} = require("./questions");
 
+// The temporary outputs from the enquirer functions are stored here.
 let arrayStaffGlobal = [];
 let teamName;
-
-//Validate functions
-
-const stringLength = (input) => {
-  if (input.length < 3) {
-    return "String must be between 3 and 10 characters";
-  }
-  return true;
-};
-
-const isNumber = (input) => {
-  if (isNaN(input)) {
-    return "Input is not a number";
-  }
-  return true;
-};
-
-const questionManager = [
-  {
-    name: "team",
-    message: "Please enter the name of your Team:",
-    type: "text",
-    validate: (answer) => stringLength(answer),
-  },
-  {
-    name: "name",
-    message: "Please enter manager's name:",
-    type: "input",
-    default: "Rachel",
-    validate: (answer) => stringLength(answer),
-  },
-  {
-    name: "ID",
-    message: "Please enter manager's ID:",
-    type: "input",
-    default: "1",
-    validate: (answer) => isNumber(answer),
-  },
-  {
-    name: "email",
-    message: "Please enter manager's email:",
-    type: "input",
-    validate: emailValidator.validate,
-    default: "dummyEmail@gmail.com",
-  },
-  {
-    name: "officeNumber",
-    message: "Please enter manager's office number:",
-    type: "input",
-    default: "1",
-    validate: (answer) => isNumber(answer),
-  },
-];
-const questionsEngineer = createQuestions("Engineer", "github");
-const questionIntern = createQuestions("intern", "school");
-
-// This function creates the array of objects for Engineer and Intern
-function createQuestions(role, extraVariable) {
-  const arrayObjects = [
-    {
-      name: "name",
-      message: `"Please enter ${role}'s name:`,
-      type: "input",
-      default: "1",
-      validate: (answer) => stringLength(answer),
-    },
-    {
-      name: "ID",
-      message: `Please enter ${role}'s ID:`,
-      type: "input",
-      default: "2",
-      validate: (answer) => isNumber(answer),
-    },
-    {
-      name: "email",
-      message: `Please enter ${role}'s email:`,
-      type: "input",
-      validate: emailValidator.validate,
-      default: "dummyEmail@gmail.com",
-    },
-    {
-      name: `${extraVariable}`,
-      message: `Please enter ${role}'s ${extraVariable}:`,
-      type: "input",
-      default: "4",
-      validate: (answer) => stringLength(answer),
-    },
-  ];
-  return arrayObjects;
-}
 
 // Tool functions
 const enquirerFunction = async () => {
@@ -170,7 +84,7 @@ const renderManager = (arrayStaffGlobal) => {
     if ("officeNumber" in arrayStaffGlobal[i]) {
       // console.log("Insider");
       stringer += `
-            <div class="card" style="width: 18rem">
+            <div class="card" style="width: 20rem">
             <div class="bg-dark">
               <h4 class="card-title text-center p-1 text-white">${arrayStaffGlobal[i].name}</h4>
               <h5 class="card-title text-center text-white">
@@ -209,7 +123,7 @@ const renderEngineer = (arrayStaffGlobal) => {
     if ("gitHubUserName" in arrayStaffGlobal[i]) {
       console.log("Insider");
       stringer += `
-      <div class="card" style="width: 18rem">
+      <div class="card" style="width: 20rem">
       <div class="bg-primary">
         <h4 class="card-title text-center p-1 text-white">${arrayStaffGlobal[i].name}</h4>
         <h5 class="card-title text-center text-white">
@@ -227,12 +141,12 @@ const renderEngineer = (arrayStaffGlobal) => {
             <tr>
               <td>Email</td>
               <td>
-                <a href="mailto:webmaster@example.com">${arrayStaffGlobal[i].email}</a>
+                <a href="mailto:${arrayStaffGlobal[i].email}">${arrayStaffGlobal[i].email}</a>
               </td>
             </tr>
             <tr>
               <td>GitHub</td>
-              <td><a href="mailto:webmaster@example.com">${arrayStaffGlobal[i].gitHubUserName}</a></td>
+              <td><a href="https://github.com/${arrayStaffGlobal[i].gitHubUserName}">${arrayStaffGlobal[i].gitHubUserName}</a></td>
             </tr>
           </tbody>
         </table>
@@ -266,12 +180,12 @@ const renderIntern = (arrayStaffGlobal) => {
         <tr>
           <td>Email</td>
           <td>
-            <a href="mailto:webmaster@example.com">${arrayStaffGlobal[i].email}</a>
+            <a href="mailto:${arrayStaffGlobal[i].email}">${arrayStaffGlobal[i].email}</a>
           </td>
         </tr>
         <tr>
           <td>School</td>
-          <td><a href="mailto:webmaster@example.com">${arrayStaffGlobal[i].school}</a></td>
+          <td>${arrayStaffGlobal[i].school}</td>
         </tr>
       </tbody>
     </table>
@@ -374,6 +288,7 @@ const renderHTMLTemplate = (arrayObjects, teamName) => {
     </html>
     `;
 };
+
 //Functions to run to create page
 const renderPage = async () => {
   await enquirerFunction();
