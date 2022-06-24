@@ -10,24 +10,44 @@ const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 
 let arrayStaffGlobal = [];
+let teamName;
+
+//Validate functions
+
+const stringLength = (input) => {
+  if (input.length < 3) {
+    return "String must be between 3 and 10 characters";
+  }
+  return true;
+};
+
+const isNumber = (input) => {
+  if (isNaN(input)) {
+    return "Input is not a number";
+  }
+  return true;
+};
 
 const questionManager = [
   {
     name: "team",
     message: "Please enter the name of your Team:",
     type: "text",
+    validate: (answer) => stringLength(answer),
   },
   {
     name: "name",
     message: "Please enter manager's name:",
     type: "input",
     default: "Rachel",
+    validate: (answer) => stringLength(answer),
   },
   {
     name: "ID",
     message: "Please enter manager's ID:",
     type: "input",
     default: "1",
+    validate: (answer) => isNumber(answer),
   },
   {
     name: "email",
@@ -41,6 +61,7 @@ const questionManager = [
     message: "Please enter manager's office number:",
     type: "input",
     default: "1",
+    validate: (answer) => isNumber(answer),
   },
 ];
 const questionsEngineer = createQuestions("Engineer", "github");
@@ -54,12 +75,14 @@ function createQuestions(role, extraVariable) {
       message: `"Please enter ${role}'s name:`,
       type: "input",
       default: "1",
+      validate: (answer) => stringLength(answer),
     },
     {
       name: "ID",
       message: `Please enter ${role}'s ID:`,
       type: "input",
       default: "2",
+      validate: (answer) => isNumber(answer),
     },
     {
       name: "email",
@@ -73,6 +96,7 @@ function createQuestions(role, extraVariable) {
       message: `Please enter ${role}'s ${extraVariable}:`,
       type: "input",
       default: "4",
+      validate: (answer) => stringLength(answer),
     },
   ];
   return arrayObjects;
@@ -83,8 +107,9 @@ const enquirerFunction = async () => {
   await inquirer.prompt(questionManager).then(async (answerOne) => {
     console.log("First path");
     let isTrue = true;
-    let arrayStaff = [];
-    arrayStaff.push(
+    teamName = answerOne.team.toUpperCase();
+    console.log(teamName);
+    arrayStaffGlobal.push(
       new Manager(
         answerOne.name,
         answerOne.email,
@@ -108,7 +133,7 @@ const enquirerFunction = async () => {
             return;
           } else if (answerTwo.staff == "Engineer") {
             await inquirer.prompt(questionsEngineer).then((answersTwo) => {
-              arrayStaff.push(
+              arrayStaffGlobal.push(
                 new Engineer(
                   answersTwo.name,
                   answersTwo.email,
@@ -116,11 +141,11 @@ const enquirerFunction = async () => {
                   answersTwo.github
                 )
               );
-              console.log(arrayStaff);
+              console.log(arrayStaffGlobal);
             });
           } else if (answerTwo.staff == "Intern") {
             await inquirer.prompt(questionIntern).then((answersThree) => {
-              arrayStaff.push(
+              arrayStaffGlobal.push(
                 new Intern(
                   answersThree.name,
                   answersThree.email,
@@ -132,23 +157,22 @@ const enquirerFunction = async () => {
           }
         });
     }
-    arrayStaffGlobal.push(arrayStaff);
-    console.log(arrayStaffGlobal);
   });
 };
 
 //Render page
-const renderManager = (arrayStaff) => {
+const renderManager = (arrayStaffGlobal) => {
   let stringer = ``;
   console.log("Outer");
-  for (let i = 0; i < arrayStaff.length; i++) {
+  console.log(arrayStaffGlobal[0]);
+  for (let i = 0; i < arrayStaffGlobal.length; i++) {
     console.log("Outsider");
-    if ("officeNumber" in arrayStaff[0][i]) {
-      console.log("Insider");
+    if ("officeNumber" in arrayStaffGlobal[i]) {
+      // console.log("Insider");
       stringer += `
             <div class="card" style="width: 18rem">
             <div class="bg-dark">
-              <h4 class="card-title text-center p-1 text-white">${arrayStaff[0][i].name}</h4>
+              <h4 class="card-title text-center p-1 text-white">${arrayStaffGlobal[i].name}</h4>
               <h5 class="card-title text-center text-white">
                 <i class="fa-solid fa-trees"></i> Manager
               </h5>
@@ -158,17 +182,17 @@ const renderManager = (arrayStaff) => {
                 <tbody>
                   <tr>
                     <td>ID</td>
-                    <td>${arrayStaff[0][i].ID}</td>
+                    <td>${arrayStaffGlobal[i].ID}</td>
                   </tr>
                   <tr>
                     <td>Email</td>
                     <td>
-                      <a href="mailto:webmaster@example.com">${arrayStaff[0][i].email}</a>
+                      <a href="mailto:webmaster@example.com">${arrayStaffGlobal[i].email}</a>
                     </td>
                   </tr>
                   <tr>
                     <td>Office Number</td>
-                    <td>${arrayStaff[0][i].officeNumber}</td>
+                    <td>${arrayStaffGlobal[i].officeNumber}</td>
                   </tr>
                 </tbody>
               </table>
@@ -179,15 +203,15 @@ const renderManager = (arrayStaff) => {
   }
   return stringer;
 };
-const renderEngineer = (arrayStaff) => {
+const renderEngineer = (arrayStaffGlobal) => {
   let stringer = ``;
-  for (let i = 0; i < arrayStaff[0].length; i++) {
-    if ("github" in arrayStaff[0][i]) {
+  for (let i = 0; i < arrayStaffGlobal.length; i++) {
+    if ("gitHubUserName" in arrayStaffGlobal[i]) {
       console.log("Insider");
       stringer += `
       <div class="card" style="width: 18rem">
       <div class="bg-primary">
-        <h4 class="card-title text-center p-1 text-white">${arrayStaff[0][i].name}</h4>
+        <h4 class="card-title text-center p-1 text-white">${arrayStaffGlobal[i].name}</h4>
         <h5 class="card-title text-center text-white">
           <i class="fa-solid fa-tree"></i>
           Engineer
@@ -198,17 +222,17 @@ const renderEngineer = (arrayStaff) => {
           <tbody>
             <tr>
               <td>ID</td>
-              <td>${arrayStaff[0][i].ID}</td>
+              <td>${arrayStaffGlobal[i].id}</td>
             </tr>
             <tr>
               <td>Email</td>
               <td>
-                <a href="mailto:webmaster@example.com">${arrayStaff[0][i].email}</a>
+                <a href="mailto:webmaster@example.com">${arrayStaffGlobal[i].email}</a>
               </td>
             </tr>
             <tr>
               <td>GitHub</td>
-              <td><a href="mailto:webmaster@example.com">${arrayStaff[0][i].github}</a></td>
+              <td><a href="mailto:webmaster@example.com">${arrayStaffGlobal[i].gitHubUserName}</a></td>
             </tr>
           </tbody>
         </table>
@@ -219,15 +243,15 @@ const renderEngineer = (arrayStaff) => {
   }
   return stringer;
 };
-const renderIntern = (arrayStaff) => {
+const renderIntern = (arrayStaffGlobal) => {
   let stringer = ``;
-  for (let i = 0; i < arrayStaff[0].length; i++) {
-    if ("school" in arrayStaff[0][i]) {
+  for (let i = 0; i < arrayStaffGlobal.length; i++) {
+    if ("school" in arrayStaffGlobal[i]) {
       console.log("Insider");
       stringer += `
       <div class="card" style="width: 18rem">
       <div class="bg-success">
-        <h4 class="card-title text-center p-1 text-white">${arrayStaff[0][i].name}</h4>
+        <h4 class="card-title text-center p-1 text-white">${arrayStaffGlobal[i].name}</h4>
         <h5 class="card-title text-center text-white">
           <i class="fa-solid fa-seedling"></i> Intern
         </h5>
@@ -237,17 +261,17 @@ const renderIntern = (arrayStaff) => {
       <tbody>
         <tr>
           <td>ID</td>
-          <td>${arrayStaff[0][i].ID}</td>
+          <td>${arrayStaffGlobal[i].id}</td>
         </tr>
         <tr>
           <td>Email</td>
           <td>
-            <a href="mailto:webmaster@example.com">${arrayStaff[0][i].email}</a>
+            <a href="mailto:webmaster@example.com">${arrayStaffGlobal[i].email}</a>
           </td>
         </tr>
         <tr>
           <td>School</td>
-          <td><a href="mailto:webmaster@example.com">${arrayStaff[0][i].school}</a></td>
+          <td><a href="mailto:webmaster@example.com">${arrayStaffGlobal[i].school}</a></td>
         </tr>
       </tbody>
     </table>
@@ -258,7 +282,7 @@ const renderIntern = (arrayStaff) => {
   }
   return stringer;
 };
-const renderHTMLTemplate = (arrayObjects) => {
+const renderHTMLTemplate = (arrayObjects, teamName) => {
   return `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -280,9 +304,9 @@ const renderHTMLTemplate = (arrayObjects) => {
       </head>
       <body>
         <!-- Header -->
-        <div class="card-header text-center fs-1">${
-          arrayObjects[0][1].team
-        }</div>
+        <div class="card-header text-center fs-1">
+        ${teamName}
+        </div>
         <!------------ Cards ------------>
         <!-- Managers -->
         <p>
@@ -353,10 +377,10 @@ const renderHTMLTemplate = (arrayObjects) => {
 //Functions to run to create page
 const renderPage = async () => {
   await enquirerFunction();
-  //   console.log(renderHTMLTemplate(arrayStaffGlobal));
+  console.log(arrayStaffGlobal[0].name);
   fs.writeFile(
-    "../dist/Team.html",
-    renderHTMLTemplate(arrayStaffGlobal),
+    `../dist/Team.html`,
+    renderHTMLTemplate(arrayStaffGlobal, teamName),
     (err) => (err ? console.error(err) : console.log("Success!"))
   );
   console.log(arrayStaffGlobal);
