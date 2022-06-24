@@ -61,7 +61,7 @@ function createQuestions(role, extraVariable) {
       name: "name",
       message: `"Please enter ${role}'s name:`,
       type: "input",
-      default: "1",
+      default: "Frank",
       validate: (answer) => stringLength(answer),
     },
     {
@@ -81,7 +81,7 @@ function createQuestions(role, extraVariable) {
     {
       name: `${extraVariable}`,
       message: `Please enter ${role}'s ${extraVariable}:`,
-      type: "input",
+      type: "CodeBummer",
       default: "4",
       validate: (answer) => stringLength(answer),
     },
