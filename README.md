@@ -4,8 +4,6 @@
 
 - [Video desmostration](https://drive.google.com/file/d/1SibmUdLOkFdAZQr9C5uZOcOx9-1MqL6e/view?usp=sharing)
 
-- [ desmostration](https://drive.google.com/file/d/1SibmUdLOkFdAZQr9C5uZOcOx9-1MqL6e/view?usp=sharing)
-
 # Table of Contents
 
 - [Description](#description)
