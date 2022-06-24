@@ -19,10 +19,8 @@ let teamName;
 // Tool functions
 const enquirerFunction = async () => {
   await inquirer.prompt(questionManager).then(async (answerOne) => {
-    console.log("First path");
     let isTrue = true;
     teamName = answerOne.team.toUpperCase();
-    console.log(teamName);
     arrayStaffGlobal.push(
       new Manager(
         answerOne.name,
@@ -40,9 +38,7 @@ const enquirerFunction = async () => {
           choices: ["Engineer", "Intern", "Finish"],
         })
         .then(async (answerTwo) => {
-          console.log("Second path");
           if (answerTwo.staff == "Finish") {
-            console.log("completed!");
             isTrue = false;
             return;
           } else if (answerTwo.staff == "Engineer") {
@@ -55,7 +51,6 @@ const enquirerFunction = async () => {
                   answersTwo.github
                 )
               );
-              console.log(arrayStaffGlobal);
             });
           } else if (answerTwo.staff == "Intern") {
             await inquirer.prompt(questionIntern).then((answersThree) => {
@@ -77,12 +72,8 @@ const enquirerFunction = async () => {
 //Render page
 const renderManager = (arrayStaffGlobal) => {
   let stringer = ``;
-  console.log("Outer");
-  console.log(arrayStaffGlobal[0]);
   for (let i = 0; i < arrayStaffGlobal.length; i++) {
-    console.log("Outsider");
     if ("officeNumber" in arrayStaffGlobal[i]) {
-      // console.log("Insider");
       stringer += `
             <div class="card" style="width: 20rem">
             <div class="bg-dark">
@@ -96,7 +87,7 @@ const renderManager = (arrayStaffGlobal) => {
                 <tbody>
                   <tr>
                     <td>ID</td>
-                    <td>${arrayStaffGlobal[i].ID}</td>
+                    <td>${arrayStaffGlobal[i].id}</td>
                   </tr>
                   <tr>
                     <td>Email</td>
@@ -121,7 +112,6 @@ const renderEngineer = (arrayStaffGlobal) => {
   let stringer = ``;
   for (let i = 0; i < arrayStaffGlobal.length; i++) {
     if ("gitHubUserName" in arrayStaffGlobal[i]) {
-      console.log("Insider");
       stringer += `
       <div class="card" style="width: 20rem">
       <div class="bg-primary">
@@ -161,7 +151,6 @@ const renderIntern = (arrayStaffGlobal) => {
   let stringer = ``;
   for (let i = 0; i < arrayStaffGlobal.length; i++) {
     if ("school" in arrayStaffGlobal[i]) {
-      console.log("Insider");
       stringer += `
       <div class="card" style="width: 18rem">
       <div class="bg-success">
@@ -292,13 +281,12 @@ const renderHTMLTemplate = (arrayObjects, teamName) => {
 //Functions to run to create page
 const renderPage = async () => {
   await enquirerFunction();
-  console.log(arrayStaffGlobal[0].name);
+  // console.log(arrayStaffGlobal[0].name);
   fs.writeFile(
-    `../dist/Team.html`,
+    "./dist/Team.html",
     renderHTMLTemplate(arrayStaffGlobal, teamName),
     (err) => (err ? console.error(err) : console.log("Success!"))
   );
-  console.log(arrayStaffGlobal);
 };
 
 renderPage();
